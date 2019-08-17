@@ -10,7 +10,8 @@
   },
   "permissions": [
     "activeTab",
-    "Tabs"
+    "Tabs",
+    "windows"
   ],
   "content_security_policy": "script-src 'self' 'sha256-yXWZxmxCVrpp441pWijkdPhNXFnGXsXHWcGgT4zuq50='"
 }
