@@ -2,39 +2,60 @@
 import React, {Component} from 'react';
 import QRCode from "qrcode.react";
 
+function getAllOpenWindows(winData, that){
+  const tabs = [];
+  const tabs_url = [];
+  const tabs_title = [];
+  const tabs_favurl = [];
+
+  for(let i in winData) {
+    if (winData[i].focused === true) {
+      const winTabs = winData[i].tabs;
+      const totTabs = winTabs.length;
+      for (let j=0; j < totTabs; j++){
+        tabs.push(winTabs[j]);
+        tabs_url.push(winTabs[j].url);
+        tabs_title.push(winTabs[j].title);
+        tabs_favurl.push(winTabs[j].favIconUrl);
+      }
+    }
+  }
+  that.setState({count: tabs.length});
+  const url_temp = tabs_url[0];
+  const title_temp = tabs_title[0];
+  const favIconUrl_temp = tabs_favurl[0];
+  that.setState({url: url_temp});
+  that.setState({title: title_temp});
+  that.setState({favIconUrl: favIconUrl_temp});
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      count: 0,
       url: [],
       title: [],
       favIconUrl: [],
-      // object_tab: []
     };
   }
+
   componentDidMount() {
-    // const that = this;
-    chrome.tabs.getSelected(tab=>{
-      const url_temp = tab.url;
-      const title_temp = tab.title;
-      const favIconUrl_temp = tab.favIconUrl;
-      // const object_tab_temp = tab.object_tab;
-      this.setState({url: url_temp});
-      this.setState({title: title_temp});
-      this.setState({favIconUrl: favIconUrl_temp});
-      // that.setState({title: object_tab_temp});
-    })
-  }
+    chrome.windows.getAll({populate:true},(winData) => {getAllOpenWindows(winData, this)});
+  };
+
+
   render() {
     return(
         <div>
-          <p>{this.state.url}</p>
-          <p>{this.state.title}</p>
+          <p>開いているタブの数{this.state.count}</p>
+          <li>【URL】{this.state.url}</li>
+          <li>【title】{this.state.title}</li>
+          <li>【favIconUrl】{this.state.favIconUrl}</li>
           <QRCode value={this.state.url} />
           <img src={this.state.favIconUrl} alt="icon"/>
-          {/*<p>{this.state.object_tab}</p>*/}
         </div>
-    )
+    );
   }
 }
 
