@@ -7,7 +7,8 @@ function getAllOpenWindows(winData, that){
   const tabs_url = [];
   const tabs_title = [];
   const tabs_favurl = [];
-
+  console.log("winData");
+  console.log(winData);
   for(let i in winData) {
     if (winData[i].focused === true) {
       const winTabs = winData[i].tabs;
@@ -20,10 +21,10 @@ function getAllOpenWindows(winData, that){
       }
     }
   }
+  const url_temp = tabs_url;
+  const title_temp = tabs_title;
+  const favIconUrl_temp = tabs_favurl;
   that.setState({count: tabs.length});
-  const url_temp = tabs_url[0];
-  const title_temp = tabs_title[0];
-  const favIconUrl_temp = tabs_favurl[0];
   that.setState({url: url_temp});
   that.setState({title: title_temp});
   that.setState({favIconUrl: favIconUrl_temp});
@@ -48,12 +49,26 @@ class App extends Component {
   render() {
     return(
         <div>
-          <p>開いているタブの数{this.state.count}</p>
-          <li>【URL】{this.state.url}</li>
-          <li>【title】{this.state.title}</li>
-          <li>【favIconUrl】{this.state.favIconUrl}</li>
-          <QRCode value={this.state.url} />
-          <img src={this.state.favIconUrl} alt="icon"/>
+          <p>開いているタブの数：{this.state.count}</p>
+          <ui>
+            {this.state.url.map(url_item => (
+              <li key={url_item}>【URL】{url_item}</li>
+            ))}
+          </ui>
+
+          <ui>
+            {this.state.favIconUrl.map(favIcon_item => (
+                <li key={favIcon_item}>【favIconURL】
+                  <img src={favIcon_item} alt="favIcon"/>
+                </li>
+            ))}
+          </ui>
+
+          <ui>
+            {this.state.title.map(title => (
+                <li key={title}>【title】{title}</li>
+            ))}
+          </ui>
         </div>
     );
   }
