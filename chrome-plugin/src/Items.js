@@ -51,7 +51,9 @@ class Items extends React.Component {
 
         return(
             <div>
-                <li>開いているタブの数：{this.state.count}</li>
+                <Typography variant="h5" color="textSecondary">
+                    開いているタブの数：{this.state.count}
+                </Typography>
 
                 <Grid container
                       dirction="row"
@@ -70,7 +72,7 @@ class Items extends React.Component {
                                 />
 
                                 <Button color="secondary">
-                                    <Typography variant="title" color="inherit" noWrap>
+                                    <Typography variant="title" color="inherit" noWrap="true">
                                             <a
                                                 onClick={() => chrome.tabs.create({url: tab.url}, tab => {})}
                                                 href={tab.url}>
@@ -93,7 +95,7 @@ class Items extends React.Component {
 
                 <br/>
 
-                <Typography variant="title" color="inherit" noWrap>
+                <Typography variant="title" color="inherit" noWrap="true">
                     <ui>
                         {this.state.tabs.map(tab2 => (
                             <li key={tab2.id}>【URL】{tab2.url}</li>
