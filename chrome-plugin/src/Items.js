@@ -3,6 +3,7 @@ import React from "react";
 import QRCode from "qrcode.react";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import noimage from './noimage.png';
 
 function getAllOpenWindows(winData, that){
     const tabs = [];
@@ -48,7 +49,12 @@ class Items extends React.Component {
                         <Grid item xs={12} key={tab.id}>
                             【favIconURL】
                             <Paper>
-                                <img src={tab.favIconUrl} alt="favIcon"/>
+                                <img src={tab.favIconUrl}
+                                    width="30"
+                                    height="30"
+                                    alt="favIcon"
+                                    onError={(e) => e.target.src = noimage}
+                                />
                                 <span>
                                     {tab.title}
                                 </span>
