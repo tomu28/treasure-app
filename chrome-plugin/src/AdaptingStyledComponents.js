@@ -46,9 +46,7 @@ const renderQrCode = (showQr, url) => {
         //TODO
         // QR表示ボタンが移動しないようにすること
         return (
-
                 <QRCode value={url} size="30"/>
-
         )
     }
     return (

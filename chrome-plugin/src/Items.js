@@ -16,7 +16,6 @@ function getAllOpenWindows(winData, that){
             const totTabs = winTabs.length;
             for (let j=0; j < totTabs; j++){
                 tabs.push(winTabs[j]);
-                console.log("tabs:" , tabs);
             }
         }
     }
