@@ -47,7 +47,7 @@ class Items extends React.Component {
                 >
                     {this.state.tabs.map(tab => (
                         <Grid item xs={12} key={tab.id}>
-                            【favIconURL】
+                            <br/>
                             <Paper>
                                 <img src={tab.favIconUrl}
                                     width="30"
@@ -55,9 +55,9 @@ class Items extends React.Component {
                                     alt="favIcon"
                                     onError={(e) => e.target.src = noimage}
                                 />
-                                <span>
+                                <a href={tab.url}>
                                     {tab.title}
-                                </span>
+                                </a>
                             </Paper>
                         </Grid>
                     ))}
