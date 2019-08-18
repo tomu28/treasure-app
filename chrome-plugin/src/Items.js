@@ -2,6 +2,7 @@
 import React from "react";
 import QRCode from "qrcode.react";
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 function getAllOpenWindows(winData, that){
     const tabs = [];
@@ -14,6 +15,8 @@ function getAllOpenWindows(winData, that){
             const totTabs = winTabs.length;
             for (let j=0; j < totTabs; j++){
                 tabs.push(winTabs[j]);
+                console.log("tabs:" , tabs);
+
                 tabs_url.push(winTabs[j].url);
                 tabs_title.push(winTabs[j].title);
                 tabs_favurl.push(winTabs[j].favIconUrl);
@@ -39,6 +42,8 @@ function getAllOpenWindows(winData, that){
     that.setState({url: url_temp});
     that.setState({title: title_temp});
     that.setState({favIconUrl: favIconUrl_temp});
+
+    that.setState({tabs: tabs});
 }
 
 class Items extends React.Component {
@@ -46,6 +51,7 @@ class Items extends React.Component {
         super(props);
         this.state = {
             count: 0,
+            tabs: [],
             url: [],
             title: [],
             favIconUrl: [],
@@ -56,7 +62,6 @@ class Items extends React.Component {
         chrome.windows.getAll({populate:true},(winData) => {getAllOpenWindows(winData, this)});
     };
 
-
     render() {
         // Row　行
         // Col  列
@@ -65,26 +70,42 @@ class Items extends React.Component {
             <div>
                 <p>開いているタブの数：{this.state.count}</p>
 
+                <Grid container
+                      dirction="row"
+                      justify="flex-start"
+                      alignItems="flex-start"
+                >
 
+                        {this.state.tabs.map(tab => (
+                            <Grid item xs={12} key={tab.id}>
+                                【favIconURL】
+                                <Paper>
+                                <img src={tab.favIconUrl} alt="favIcon"/>
+                                <span>
+                                    {tab.title}
+                                </span>
+
+                                </Paper>
+                            </Grid>
+                        ))}
+
+                        {/*{this.state.title.map(title => (*/}
+                        {/*    <Grid item xs={10} key={title}>*/}
+                        {/*        <Paper>*/}
+                        {/*            【title】{title}*/}
+                        {/*        </Paper>*/}
+                        {/*    </Grid>*/}
+                        {/*))}*/}
+
+                </Grid>
+
+                <br/>
                 <ui>
                     {this.state.url.map(url_item => (
                         <li key={url_item}>【URL】{url_item}</li>
                     ))}
                 </ui>
 
-                <ui>
-                    {this.state.favIconUrl.map(favIcon_item => (
-                        <li key={favIcon_item}>【favIconURL】
-                            <img src={favIcon_item} alt="favIcon"/>
-                        </li>
-                    ))}
-                </ui>
-
-                <ui>
-                    {this.state.title.map(title => (
-                        <li key={title}>【title】{title}</li>
-                    ))}
-                </ui>
             </div>
         );
     }
