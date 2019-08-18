@@ -1,6 +1,7 @@
 /*global chrome*/
 import React from "react";
 import QRCode from "qrcode.react";
+import Grid from '@material-ui/core/Grid';
 
 function getAllOpenWindows(winData, that){
     const tabs = [];
@@ -16,12 +17,24 @@ function getAllOpenWindows(winData, that){
                 tabs_url.push(winTabs[j].url);
                 tabs_title.push(winTabs[j].title);
                 tabs_favurl.push(winTabs[j].favIconUrl);
+
+                // tabs[j].url
+                // tabs[j].title
+                // tabs[j].favIconUrl
+
+                // で取得可能
             }
         }
     }
     const url_temp = tabs_url;
     const title_temp = tabs_title;
     const favIconUrl_temp = tabs_favurl;
+
+    const tabs_mul = [tabs_url, tabs_title, tabs_favurl];
+    // 1つ目：[1] url, [2] title, [3] favurl
+    // 2つ目：取得した内容
+    console.log("tabs_mul:::" + tabs_mul[1][1]);
+
     that.setState({count: tabs.length});
     that.setState({url: url_temp});
     that.setState({title: title_temp});
@@ -45,6 +58,9 @@ class Items extends React.Component {
 
 
     render() {
+        // Row　行
+        // Col  列
+
         return(
             <div>
                 <p>開いているタブの数：{this.state.count}</p>
