@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import noimage from './noimage.png';
 import Typography from '@material-ui/core/Typography';
 import {Box} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 function getAllOpenWindows(winData, that){
     const tabs = [];
@@ -23,6 +25,15 @@ function getAllOpenWindows(winData, that){
     that.setState({tabs: tabs});
 }
 
+const useStyles = makeStyles(theme => ({
+    button: {
+        margin: theme.spacing(1),
+    },
+    input: {
+        display: 'none',
+    },
+}));
+
 class Items extends React.Component {
     constructor(props) {
         super(props);
@@ -37,6 +48,7 @@ class Items extends React.Component {
     };
 
     render() {
+
         return(
             <div>
                 <li>開いているタブの数：{this.state.count}</li>
@@ -57,20 +69,22 @@ class Items extends React.Component {
                                     onError={(e) => e.target.src = noimage}
                                 />
 
-                                <Typography variant="title" color="inherit" noWrap>
-                                        <a
-                                            onClick={() => chrome.tabs.create({url: tab.url}, tab => {})}
-                                            href={tab.url}>
-                                            {tab.title}
-                                        </a>
-                                </Typography>
+                                <Button color="secondary">
+                                    <Typography variant="title" color="inherit" noWrap>
+                                            <a
+                                                onClick={() => chrome.tabs.create({url: tab.url}, tab => {})}
+                                                href={tab.url}>
+                                                {tab.title}
+                                            </a>
+                                    </Typography>
+                                </Button>
 
                                 <Box justifyContent="flex-end">
-                                    <button
+                                    <Button variant="contained" component="span" size="small"
                                         onClick={() => chrome.tabs.remove(tab.id)}
                                     >
                                         Delete
-                                    </button>
+                                    </Button>
                                 </Box>
                             </Paper>
                         </Grid>
