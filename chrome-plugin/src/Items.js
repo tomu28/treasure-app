@@ -1,13 +1,12 @@
 /*global chrome*/
 import React from "react";
-import QRCode from "qrcode.react";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import noimage from './noimage.png';
 import Typography from '@material-ui/core/Typography';
 import {Box} from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import AdaptingStyledComponents from "./AdaptingStyledComponents";
 
 function getAllOpenWindows(winData, that){
     const tabs = [];
@@ -25,25 +24,25 @@ function getAllOpenWindows(winData, that){
     that.setState({tabs: tabs});
 }
 
-const useStyles = makeStyles(theme => ({
-    button: {
-        margin: theme.spacing(1),
-    },
-    input: {
-        display: 'none',
-    },
-}));
-
 class Items extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             count: 0,
             tabs: [],
+            showQr: false,
         };
     }
 
-    componentDidMount() {
+    handleQr() {
+        this.setState({showQr: true})
+    };
+
+    leaveQr() {
+        this.setState({showQr: false})
+    };
+
+    componentWillMount() {
         chrome.windows.getAll({populate:true},(winData) => {getAllOpenWindows(winData, this)});
     };
 
@@ -73,20 +72,22 @@ class Items extends React.Component {
 
                                 <Button color="secondary">
                                     <Typography variant="title" color="inherit" noWrap="true">
-                                            <a
-                                                onClick={() => chrome.tabs.create({url: tab.url}, tab => {})}
-                                                href={tab.url}>
-                                                {tab.title}
-                                            </a>
+                                        <a
+                                            onClick={() => chrome.tabs.create({url: tab.url}, tab => {})}
+                                            href={tab.url}>
+                                            {tab.title}
+                                        </a>
                                     </Typography>
                                 </Button>
 
                                 <Box justifyContent="flex-end">
-                                    <Button variant="contained" component="span" size="small"
-                                        onClick={() => chrome.tabs.remove(tab.id)}
-                                    >
-                                        Delete
-                                    </Button>
+                                    <AdaptingStyledComponents
+                                        value={{Red: tab.id,
+                                        Blue:tab.url,
+                                        Qr: this.state.showQr,
+                                        mouseOverHandling: () => {this.handleQr()},
+                                        mouseOutHandling: () => {this.leaveQr()}}}
+                                    />
                                 </Box>
                             </Paper>
                         </Grid>
@@ -98,12 +99,13 @@ class Items extends React.Component {
                 <Typography variant="title" color="inherit" noWrap="true">
                     <ui>
                         {this.state.tabs.map(tab2 => (
-                            <li key={tab2.id}>【URL】{tab2.url}</li>
+                            <h1><span class="margin">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></h1>
                         ))}
                     </ui>
                 </Typography>
+
             </div>
-        );
+        );//TODO 文字合わせ
     }
 }
 
