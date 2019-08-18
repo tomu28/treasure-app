@@ -4,6 +4,8 @@ import QRCode from "qrcode.react";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import noimage from './noimage.png';
+import Typography from '@material-ui/core/Typography';
+import {Box} from "@material-ui/core";
 
 function getAllOpenWindows(winData, that){
     const tabs = [];
@@ -17,7 +19,6 @@ function getAllOpenWindows(winData, that){
             }
         }
     }
-
     that.setState({count: tabs.length});
     that.setState({tabs: tabs});
 }
@@ -50,26 +51,41 @@ class Items extends React.Component {
                             <br/>
                             <Paper>
                                 <img src={tab.favIconUrl}
-                                    width="30"
-                                    height="30"
+                                    width="36"
+                                    height="36"
                                     alt="favIcon"
                                     onError={(e) => e.target.src = noimage}
                                 />
-                                <a href={tab.url}>
-                                    {tab.title}
-                                </a>
+
+                                <Typography variant="title" color="inherit" noWrap>
+                                        <a
+                                            onClick={() => chrome.tabs.create({url: tab.url}, tab => {})}
+                                            href={tab.url}>
+                                            {tab.title}
+                                        </a>
+                                </Typography>
+
+                                <Box justifyContent="flex-end">
+                                    <button
+                                        onClick={() => chrome.tabs.remove(tab.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </Box>
                             </Paper>
                         </Grid>
                     ))}
                 </Grid>
 
                 <br/>
-                <ui>
-                    {this.state.tabs.map(tab2 => (
-                        <li key={tab2.id}>【URL】{tab2.url}</li>
-                    ))}
-                </ui>
 
+                <Typography variant="title" color="inherit" noWrap>
+                    <ui>
+                        {this.state.tabs.map(tab2 => (
+                            <li key={tab2.id}>【URL】{tab2.url}</li>
+                        ))}
+                    </ui>
+                </Typography>
             </div>
         );
     }
